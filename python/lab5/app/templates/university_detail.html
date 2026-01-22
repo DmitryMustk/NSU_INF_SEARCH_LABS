@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Университет: {{ university.short_name }}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{{ university.short_name }}</h2>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Полное название</dt>
+            <dd class="col-sm-9">{{ university.full_name }}</dd>
+            
+            <dt class="col-sm-3">Дата создания</dt>
+            <dd class="col-sm-9">{{ university.creation_date.strftime('%d.%m.%Y') }}</dd>
+            
+            <dt class="col-sm-3">Количество студентов</dt>
+            <dd class="col-sm-9">{{ university.students|length }}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-4">
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('main.university_edit', id=university.id) }}" class="btn btn-warning">Изменить</a>
+        <a href="{{ url_for('main.university_delete', id=university.id) }}" class="btn btn-danger">Удалить</a>
+    {% endif %}
+    <a href="{{ url_for('main.university_list') }}" class="btn btn-secondary">Назад к списку</a>
+</div>
+{% endblock %}

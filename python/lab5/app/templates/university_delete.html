@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Удаление университета{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Удаление университета</h2>
+
+<div class="alert alert-warning">
+    <p>Вы действительно хотите удалить университет:</p>
+    <h4>{{ university.short_name }} ({{ university.full_name }})</h4>
+    
+    {% if university.students %}
+        <p class="mt-3 text-danger">
+            <strong>Внимание!</strong> В университете {{ university.students|length }} студент(ов). 
+            При удалении университета студенты тоже будут удалены.
+        </p>
+    {% endif %}
+    
+    <p class="mt-3">Это действие нельзя отменить.</p>
+</div>
+
+<form method="POST">
+    <button type="submit" class="btn btn-danger">Да, удалить</button>
+    <a href="{{ url_for('main.university_detail', id=university.id) }}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}

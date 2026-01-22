@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Университетский учёт{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>Университет</h1>
+                <p>Панель управления</p>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="{{ url_for('main.university_list') }}" 
+                           class="{% if request.endpoint == 'main.university_list' or request.endpoint.startswith('main.university_') %}active{% endif %}">
+                            <i class="fas fa-university"></i> Университеты
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('main.student_list') }}" 
+                           class="{% if request.endpoint == 'main.student_list' or request.endpoint.startswith('main.student_') %}active{% endif %}">
+                            <i class="fas fa-user-graduate"></i> Студенты
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <header class="topbar">
+                <button class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="topbar-title">{% block header %}Панель управления{% endblock %}</div>
+                <div>
+                    {% if current_user.is_authenticated %}
+                        <span style="margin-right: 1rem;">{{ current_user.username }}</span>
+                        <a href="{{ url_for('auth.logout') }}" style="color: #dc3545;">Выйти</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" style="margin-right: 1rem;">Войти</a>
+                        <a href="{{ url_for('auth.register') }}">Регистрация</a>
+                    {% endif %}
+                </div>
+            </header>
+
+            <main class="content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="toast-container">
+                {% for category, message in messages %}
+                    <div class="toast {{ category }}">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (toggle && sidebar) {
+                toggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                });
+            }
+
+            document.querySelectorAll('.toast').forEach(toast => {
+                setTimeout(() => toast.classList.add('fade-out'), 4000);
+                setTimeout(() => toast.remove(), 5000);
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{{ title }}</h2>
+
+<form method="POST" class="row g-3">
+    {{ form.hidden_tag() }}
+    
+    <div class="col-md-12">
+        {{ form.full_name.label(class="form-label") }}
+        {{ form.full_name(class="form-control") }}
+    </div>
+    
+    <div class="col-md-6">
+        {{ form.birth_date.label(class="form-label") }}
+        {{ form.birth_date(class="form-control") }}
+    </div>
+    
+    <div class="col-md-6">
+        {{ form.enrollment_year.label(class="form-label") }}
+        {{ form.enrollment_year(class="form-control") }}
+    </div>
+    
+    <div class="col-md-12">
+        {{ form.university_id.label(class="form-label") }}
+        {{ form.university_id(class="form-select") }}
+    </div>
+    
+    <div class="col-12 mt-4">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{{ url_for('main.student_list') }}" class="btn btn-secondary">Отмена</a>
+    </div>
+</form>
+{% endblock %}

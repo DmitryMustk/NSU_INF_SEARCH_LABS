@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Студент: {{ student.full_name }}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{{ student.full_name }}</h2>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Дата рождения</dt>
+            <dd class="col-sm-9">{{ student.birth_date.strftime('%d.%m.%Y') }}</dd>
+            
+            <dt class="col-sm-3">Университет</dt>
+            <dd class="col-sm-9">{{ student.university.short_name }} ({{ student.university.full_name }})</dd>
+            
+            <dt class="col-sm-3">Год поступления</dt>
+            <dd class="col-sm-9">{{ student.enrollment_year }}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-4">
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('main.student_edit', id=student.id) }}" class="btn btn-warning">Изменить</a>
+        <a href="{{ url_for('main.student_delete', id=student.id) }}" class="btn btn-danger">Удалить</a>
+    {% endif %}
+    <a href="{{ url_for('main.student_list') }}" class="btn btn-secondary">Назад к списку</a>
+</div>
+{% endblock %}

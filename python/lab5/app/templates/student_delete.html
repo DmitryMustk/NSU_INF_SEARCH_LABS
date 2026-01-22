@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Удаление студента{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Удаление студента</h2>
+
+<div class="alert alert-warning">
+    <p>Вы уверены, что хотите удалить студента:</p>
+    <h4>{{ student.full_name }}</h4>
+    <p class="mt-3">Это действие нельзя отменить.</p>
+</div>
+
+<form method="POST">
+    {{ form.hidden_tag() if form else '' }}
+    <button type="submit" class="btn btn-danger">Да, удалить</button>
+    <a href="{{ url_for('main.student_detail', id=student.id) }}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
