@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Университетский учёт{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>Университет</h1>
+                <p>Панель управления</p>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="{% url 'university_list' %}" class="{% if 'university' in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-university"></i> Университеты
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'student_list' %}" class="{% if 'student' in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-user-graduate"></i> Студенты
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <header class="topbar">
+                <button class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="topbar-title">{% block header %}Панель управления{% endblock %}</div>
+                <a href="{% url 'admin:index' %}" class="admin-link" target="_blank">
+                    Админ-панель <i class="fas fa-external-link-alt"></i>
+                </a>
+            </header>
+
+            <main class="content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="toast-container">
+            {% for message in messages %}
+                <div class="toast toast-{{ message.tags }}">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            toggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Автозакрытие тостов
+            document.querySelectorAll('.toast').forEach(toast => {
+                setTimeout(() => toast.classList.add('fade-out'), 4000);
+                setTimeout(() => toast.remove(), 5000);
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Детали университета: {{ university.short_name }}{% endblock %}
+{% block header %}Детали университета{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 700px; margin: 0 auto;">
+    <div class="card-header">
+        <h2>{{ university.short_name }}</h2>
+    </div>
+    
+    <div style="padding: 1.5rem;">
+        <dl style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; font-size: 1.05rem;">
+            <dt style="font-weight: 600; color: #4b5563;">Полное название:</dt>
+            <dd style="margin: 0;">{{ university.full_name }}</dd>
+            
+            <dt style="font-weight: 600; color: #4b5563;">Дата создания:</dt>
+            <dd style="margin: 0;">{{ university.creation_date|date:"d.m.Y" }}</dd>
+        </dl>
+        
+        <div style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+            <a href="{% url 'university_update' pk=university.pk %}" class="btn btn-primary">Изменить</a>
+            <a href="{% url 'university_delete' pk=university.pk %}" class="btn" style="background: #ef4444; color: white;">Удалить</a>
+            <a href="{% url 'university_list' %}" class="btn btn-outline">Назад к списку</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

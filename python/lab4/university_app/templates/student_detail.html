@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Детали студента: {{ student.full_name }}{% endblock %}
+{% block header %}Детали студента{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 700px; margin: 0 auto;">
+    <div class="card-header">
+        <h2>{{ student.full_name }}</h2>
+    </div>
+    
+    <div style="padding: 1.5rem;">
+        <dl style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; font-size: 1.05rem;">
+            <dt style="font-weight: 600; color: #4b5563;">Дата рождения:</dt>
+            <dd style="margin: 0;">{{ student.birth_date|date:"d.m.Y" }}</dd>
+            
+            <dt style="font-weight: 600; color: #4b5563;">Университет:</dt>
+            <dd style="margin: 0;">{{ student.university.short_name }}</dd>
+            
+            <dt style="font-weight: 600; color: #4b5563;">Год поступления:</dt>
+            <dd style="margin: 0;">{{ student.enrollment_year }}</dd>
+        </dl>
+        
+        <div style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+            <a href="{% url 'student_update' pk=student.pk %}" class="btn btn-primary">Изменить</a>
+            <a href="{% url 'student_delete' pk=student.pk %}" class="btn" style="background: #ef4444; color: white;">Удалить</a>
+            <a href="{% url 'student_list' %}" class="btn btn-outline">Назад к списку</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
